@@ -25,7 +25,7 @@ class User(db.Model):
     password = db.Column(db.Text, nullable=False)
 
     # navigation is users -> likes and back
-    user_likes = db.relationship("Like")
+    user_likes = db.relationship("Like", backref="users")
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.first_name}, {self.last_name}, {self.fav_brewery}>"
@@ -108,4 +108,4 @@ class Brewery(db.Model):
 
     # navigation is brewery -> likes and back
 
-    brewery_likes = db.relationship("Like")
+    brewery_likes = db.relationship("Like", backref="breweries")
