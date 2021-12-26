@@ -20,6 +20,7 @@ class User(db.Model):
     username = db.Column(db.Text, nullable=False, unique=True)
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
+    dob = db.Column(db.DateTime, nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
     fav_brewery = db.Column(db.Text, nullable=True)
     password = db.Column(db.Text, nullable=False)
