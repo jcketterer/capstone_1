@@ -20,7 +20,7 @@ class User(db.Model):
     username = db.Column(db.Text, nullable=False, unique=True)
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
-    dob = db.Column(db.DateTime, nullable=False)
+    date_of_birth = db.Column(db.Date, nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
     fav_brewery = db.Column(db.Text, nullable=True)
     password = db.Column(db.Text, nullable=False)
@@ -32,7 +32,7 @@ class User(db.Model):
         return f"<User #{self.id}: {self.username}, {self.first_name}, {self.last_name}, {self.fav_brewery}>"
 
     @classmethod
-    def sign_up(cls, username, first_name, last_name, email, fav_brewery, password):
+    def sign_up(cls, username, first_name, last_name, date_of_birth, email, fav_brewery, password):
         """Sign up user
         Takes hashed password and adds to DB
         """
@@ -43,6 +43,7 @@ class User(db.Model):
             username=username,
             first_name=first_name,
             last_name=last_name,
+            date_of_birth=date_of_birth,
             email=email,
             fav_brewery=fav_brewery,
             password=hashed_pw,
@@ -53,7 +54,6 @@ class User(db.Model):
 
     @classmethod
     def authenticate(cls, username, password):
-
         """Locates username and password for authentication
 
         if user is found it returns the user object otherwise returns false.
@@ -62,7 +62,8 @@ class User(db.Model):
         user = cls.query.filter_by(username=username).first()
 
         if user:
-            is_authenticated = bcrypt.check_password_hash(user.password, password)
+            is_authenticated = bcrypt.check_password_hash(
+                user.password, password)
             if is_authenticated:
                 return user
         return False

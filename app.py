@@ -12,7 +12,7 @@ from flask import (
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from models import User, Like, Brewery, db, connect_db
-from forms import AddUserFrom
+from forms import AddUserFrom, LoginForm
 import os
 
 CURR_USER_KEY = "curr_user"
@@ -46,12 +46,12 @@ def g_user():
         g.user = None
 
 
-def login(user):
+def login_user(user):
 
     session[CURR_USER_KEY] = user.id
 
 
-def logout():
+def logout_user():
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
@@ -67,18 +67,18 @@ def signup():
 
     if form.validate_on_submit():
         try:
-            user = User.signup(
+            user = User.sign_up(
                 username=form.username.data,
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
-                date_of_brith=form.date_of_brith.data,
+                date_of_birth=form.date_of_birth.data,
                 email=form.email.data,
                 fav_brewery=form.fav_brewery.data,
                 password=form.password.data,
             )
             db.session.commit()
 
-        except IntegrityError as error:
+        except IntegrityError:
             flash("Username is already taken", 'danger')
             return render_template('users/signup.html', form=form)
 
@@ -88,6 +88,33 @@ def signup():
 
     else:
         return render_template('users/signup.html', form=form)
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = User.authenticate(form.username.data, form.password.data)
+
+        if user:
+            login_user(user)
+
+            flash(f'Hey! {user.username}!', 'success')
+            return redirect('/')
+
+        flash('Invalid Username/Password', 'danger')
+
+    return render_template('users/login.html', form=form)
+
+
+@app.route('/logout')
+def logout():
+
+    logout_user()
+
+    flash('You are logged out! See you next time!', 'success')
+    return redirect('/login')
 
 
 @app.route("/")

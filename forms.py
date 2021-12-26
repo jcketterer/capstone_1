@@ -11,7 +11,7 @@ class AddUserFrom(FlaskForm):
         InputRequired(message='Please Enter First Name'), Length(max=30)])
     last_name = StringField("Last Name", validators=[
         InputRequired(message='Please Enter Last Name'), Length(max=30)])
-    date_of_brith = DateField(
+    date_of_birth = DateField(
         "Date of Birth", format='%Y-%m-%d', validators=[InputRequired(message="Please enter you Date of Birth")])
 
     email = StringField("Email", validators=[
@@ -20,3 +20,9 @@ class AddUserFrom(FlaskForm):
 
     password = PasswordField("Password", validators=[
                              InputRequired(), Length(min=6, max=55)])
+
+
+class LoginForm(FlaskForm):
+
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[Length(min=6)])
