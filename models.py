@@ -8,7 +8,7 @@ db = SQLAlchemy()
 def connect_db(app):
 
     db.app = app
-    db.init_app
+    db.init_app(app)
 
 
 class User(db.Model):
@@ -21,14 +21,11 @@ class User(db.Model):
     first_name = db.Column(db.Text, nullable=False)
     last_name = db.Column(db.Text, nullable=False)
     email = db.Column(db.Text, nullable=False, unique=True)
-    fav_brewery = db.Column(db.Text, nullable=False)
+    fav_brewery = db.Column(db.Text, nullable=True)
     password = db.Column(db.Text, nullable=False)
 
-    likes = db.relationship("Like", backref="user")
-
-    breweries = db.relationship("Brewery", backref="user")
-
-    users_breweries = db.relationship("Brewery", Secondary="breweries", backref="user")
+    # navigation is users -> likes and back
+    user_likes = db.relationship("Like")
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.first_name}, {self.last_name}, {self.fav_brewery}>"
@@ -53,16 +50,38 @@ class User(db.Model):
         db.session.add(user)
         return user
 
+    @classmethod
+    def authenticate(cls, username, password):
+
+        """Locates username and password for authentication
+
+        if user is found it returns the user object otherwise returns false.
+        """
+
+        user = cls.query.filter_by(username=username).first()
+
+        if user:
+            is_authenticated = bcrypt.check_password_hash(user.password, password)
+            if is_authenticated:
+                return user
+        return False
+
 
 class Like(db.Model):
     """Like model"""
 
     __tablename__ = "likes"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="cascade"))
-    brewery_id = db.Column(
-        db.Integer, db.ForeignKey("breweries.obdb_id", ondelete="cascade")
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id", ondelete="cascade"),
+        primary_key=True,
+    )
+    brewery_name = db.Column(
+        db.Text,
+        db.ForeignKey("breweries.obdb_id", ondelete="cascade"),
+        primary_key=True,
     )
 
 
@@ -71,9 +90,8 @@ class Brewery(db.Model):
 
     __tablename__ = "breweries"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    obdb_id = db.Column(db.Text, nullable=False)
-    name = db.Column(db.Text, nullable=False)
+    obdb_id = db.Column(db.Text, primary_key=True, nullable=False, unique=True)
+    name = db.Column(db.Text, primary_key=True, nullable=False)
     brewery_type = db.Column(db.Text, nullable=False)
     street = db.Column(db.Text, nullable=True)
     address_2 = db.Column(db.Text, nullable=True)
@@ -85,5 +103,9 @@ class Brewery(db.Model):
     website_url = db.Column(db.String, nullable=True)
     phone = db.Column(db.String, nullable=True)
     country = db.Column(db.Text, nullable=False)
-    longitude = db.Column(db.Float, nullable=True)
-    latitude = db.Column(db.Float, nullable=True)
+    longitude = db.Column(db.Text, nullable=True)
+    latitude = db.Column(db.Text, nullable=True)
+
+    # navigation is brewery -> likes and back
+
+    brewery_likes = db.relationship("Like")
