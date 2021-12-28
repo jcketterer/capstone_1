@@ -13,9 +13,13 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from models import User, Like, Brewery, db, connect_db
 from forms import AddUserFrom, LoginForm
+
 import os
+import requests
+
 
 CURR_USER_KEY = "curr_user"
+API_URL = "https://api.openbrewerydb.org/breweries"
 
 app = Flask(__name__)
 app.jinja_env.filters["zip"] = zip
@@ -119,4 +123,33 @@ def logout():
 
 @app.route("/")
 def base():
-    return render_template("base.html")
+
+    return render_template("home.html")
+
+
+@app.route('/random')
+def random_beer():
+    brewery = random_beer()
+
+    for brew in brewery:
+        if brew == None:
+            return ''
+
+    return render_template("beer/random_beer.html", brewery=brewery)
+
+
+# ******************** Loads random brewery****************************
+
+def random_beer():
+    resp = requests.get(f'{API_URL}/random')
+
+    data = resp.json()
+    brewery = data
+
+    breweries = []
+
+    for brew in brewery:
+
+        breweries += brew['name'], brew['brewery_type'], brew['country'], brew['website_url']
+
+    return breweries

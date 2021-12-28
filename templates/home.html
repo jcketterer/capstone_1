@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Brewery Home{% endblock %}
+
+{% block content %}
+
+<section class="py-5 text-center container mt-5">
+  <div class="row py-lg-5">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      <h1 class="fw-light">Search Breweries</h1>
+
+      <form action="/index" class="d-flex">
+        <input type="text" name="name" placeholder="Search Breweries" class="form-control" required>
+        <button class="btn btn-outline-success ml-3" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

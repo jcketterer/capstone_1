@@ -1,10 +1,11 @@
-import os, requests
+def get_api_response(data):
 
-URL = "https://api.openbrewerydb.org/breweries?page=401"
+    brewery = data[0]
 
-res = requests.get(URL)
+    breweries = []
 
-print(res.status_code)
+    for brew in brewery:
 
-for r in res.json():
-    print(r["name"])
+        breweries += brew['name'], brew['brewery_type'], brew['country']
+
+    return breweries
