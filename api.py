@@ -1,11 +1,16 @@
+# import requests
+# API_URL = "https://api.openbrewerydb.org/breweries"
+
+
 def get_api_response(data):
 
-    brewery = data[0]
+    drinks = data[:]
 
-    breweries = []
+    cocktails = []
 
-    for brew in brewery:
+    for drink in drinks:
 
-        breweries += brew['name'], brew['brewery_type'], brew['country']
+        cocktail = drink
 
-    return breweries
+        cocktails.append(cocktail)
+    return cocktails

@@ -13,7 +13,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from models import User, Like, Brewery, db, connect_db
 from forms import AddUserFrom, LoginForm
-
+from api import get_api_response
 import os
 import requests
 
@@ -138,18 +138,17 @@ def random_beer():
     return render_template("beer/random_beer.html", brewery=brewery)
 
 
-# ******************** Loads random brewery****************************
+# ******************** Loads random brewery data ****************************
 
 def random_beer():
     resp = requests.get(f'{API_URL}/random')
 
-    data = resp.json()
-    brewery = data
+    beers = resp.json()
+    cocktails = []
 
-    breweries = []
+    for beer in beers:
 
-    for brew in brewery:
+        cocktail = beer
+        cocktails.append(cocktail)
 
-        breweries += brew['name'], brew['brewery_type'], brew['country'], brew['website_url']
-
-    return breweries
+    return cocktails

@@ -8,7 +8,7 @@
     <div class="col-lg-6 col-md-8 mx-auto">
 
       <form action="/" class="d-flex">
-        <button class="btn btn-outline-info ml-3" type="submit">Back Home</button>
+        <button class="btn btn-outline-warning ml-3" type="submit">Back Home</button>
       </form>
 
 
@@ -18,9 +18,10 @@
           <h3 class="card-title">Random Brewery</h3>
           <hr class="border-white">
           {% for b in brewery %}
-          <h5 class="card-title font-weight-bold">
-            {{b}}
-          </h5>
+          <h5 class="card-title font-weight-bold">{{b.name}}</h5>
+          <p class="card-title font-weight-bold">{{b.brewery_type}}</p>
+          <p class="card-title font-weight-bold">{{b.country}}</p>
+          <p><a href="{{b.website_url}}" class="btn btn-outline-warning">{{b.website_url}}</a></p>
           {% endfor %}
         </div>
       </div>
