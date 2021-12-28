@@ -86,7 +86,7 @@ def signup():
             flash("Username is already taken", 'danger')
             return render_template('users/signup.html', form=form)
 
-        login(user)
+        login_user(user)
 
         return redirect('/')
 
@@ -138,7 +138,7 @@ def random_beer():
     return render_template("beer/random_beer.html", brewery=brewery)
 
 
-# ******************** Loads random brewery data ****************************
+# ******************** Functions for brewery data ****************************
 
 def random_beer():
     resp = requests.get(f'{API_URL}/random')
@@ -152,3 +152,18 @@ def random_beer():
         cocktails.append(cocktail)
 
     return cocktails
+
+# ********************* Standard User Routes **********************************
+
+
+@app.route('/users/saved')
+def show_user():
+    """Shows users account and favorite saved breweries"""
+
+    user_id = g.user.id
+    user = User.query.get_or_404(user_id)
+
+    if user:
+        return render_template('users/details.html', user=user)
+    else:
+        return render_template('users/details.html')
