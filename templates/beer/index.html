@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Search Brewery{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="" id="app">
+      <h1 class="ce">Search Breweries By Name</h1>
+      <form id="brew-search">
+        <input type="text" name="name" id="search-name" class="text-area"
+          placeholder="Search by Name">
+        <input class="btn btn-outline-success" type="submit" id="submit" value="Find Brewery">
+      </form>
+      <div class="d-flex flex-wrap justify-content-center" id="search">
+        {% for brew in breweries %}
+        <div class="card border-warning m-1" style="max-width: 20rem;">
+          <div class="card-body">
+            <h4 class="card-title">{{brew.name}}</h4>
+            <p class="card-text">{{brew.brewery_type}}</p>
+            <p class="card-text">{{brew.state}}</p>
+            <p class="card-text">{{brew.city}}</p>
+            <p class="card-text">{{brew.country}}</p>
+            {% if brew.website_url == None %}
+            {% else %}
+            <p class="card-text"><a class="btn btn-sm btn-outline-warning"
+                href="{{brew.website_url}}">{{brew.website_url}}</a></p>
+            {%endif%}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

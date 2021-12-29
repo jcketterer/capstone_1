@@ -1,16 +1,35 @@
-# import requests
-# API_URL = "https://api.openbrewerydb.org/breweries"
+import requests
+API_URL = "https://api.openbrewerydb.org/breweries?by_type=micro&page=1"
 
 
-def get_api_response(data):
+def get_api_response():
+    resp = requests.get(API_URL)
+    data = resp.json()
+    beers = data
 
-    drinks = data[:]
+    breweries = []
 
-    cocktails = []
+    for beer in beers:
 
-    for drink in drinks:
+        brewery = {
+            'name': beer['name'],
+            'state': beer['state']
+        }
 
-        cocktail = drink
+        breweries.append(brewery)
+    return breweries
+    # url = API_URL
+    # breweries = []
+    # page = 1
 
-        cocktails.append(cocktail)
-    return cocktails
+    # while True:
+    #     print("*******")
+    #     url = f"https://api.openbrewerydb.org/breweries?by_type=micro&page={page}"
+    #     print("Requesting", url)
+
+    #     resp = requests.get(url)
+    #     data = resp.json()
+    #     if len(data) == 0:
+    #         break
+    #     breweries.extend(data)
+    #     page += 1
