@@ -13,7 +13,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from models import User, Like, Brewery, db, connect_db
 from forms import AddUserFrom, LoginForm, StateForm
-from api import get_api_response
+# from api import get_api_response
 import os
 import requests
 
