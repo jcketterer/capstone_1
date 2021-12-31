@@ -94,6 +94,7 @@ class Brewery(db.Model):
 
     id = db.Column(db.Integer, primary_key=True,
                    nullable=True, unique=True, autoincrement=True)
+    obdb_id = db.Column(db.Text)
     name = db.Column(db.Text, nullable=False)
     brewery_type = db.Column(db.Text, nullable=False)
     street = db.Column(db.Text, nullable=True)
