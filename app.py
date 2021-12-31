@@ -13,7 +13,12 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from models import User, Like, Brewery, db, connect_db
 from forms import AddUserFrom, LoginForm, StateForm
+<<<<<<< HEAD
 # from api import get_api_response
+=======
+from api import get_api_response
+from werkzeug.exceptions import Unauthorized
+>>>>>>> 84a3b22 (created search routes)
 import os
 import requests
 
@@ -175,17 +180,17 @@ def get_api_response(data):
 # ********************* Standard User Routes **********************************
 
 
-@app.route('/users/saved')
-def show_user():
+@app.route('/users/<int:username>')
+def show_user(username):
     """Shows users account and favorite saved breweries"""
 
-    user_id = g.user.id
-    user = User.query.get_or_404(user_id)
+    username = User.query.get_or_404(username)
+    # if user:
+    #     return render_template('users/details.html', user=user)
+    # else:
+    #     return redirect('/')
+    return render_template('user/details.html', username=username)
 
-    if user:
-        return render_template('users/details.html', user=user)
-    else:
-        return render_template('users/details.html')
 
 # **************************** Nav and Search links ***************************
 

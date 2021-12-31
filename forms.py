@@ -85,3 +85,18 @@ states = [
 
 class StateForm(FlaskForm):
     state = SelectField("State", choices=[(st, st) for st in states])
+
+
+class EditUserForm(FlaskForm):
+
+    username = StringField("Username", validators=[
+                           InputRequired(), Length(min=1, max=20)])
+    date_of_birth = DateField(
+        "Date of Birth", format='%Y-%m-%d', validators=[InputRequired(message="Please enter you Date of Birth")])
+
+    email = StringField("Email", validators=[
+                        InputRequired(), Email(message='Please Enter A Valid Email'), Length(max=50)])
+    fav_brewery = StringField("(Optional) Favorite Brewery")
+
+    password = PasswordField("Password", validators=[
+                             InputRequired(), Length(min=6, max=55)])

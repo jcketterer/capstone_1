@@ -29,7 +29,7 @@ class User(db.Model):
     user_likes = db.relationship("Like", backref="users")
 
     def __repr__(self):
-        return f"<User #{self.id}: {self.username}, {self.first_name}, {self.last_name}, {self.fav_brewery}>"
+        return f"<User {self.id}: {self.username}, {self.first_name}, {self.last_name}, {self.fav_brewery}>"
 
     @classmethod
     def sign_up(cls, username, first_name, last_name, date_of_birth, email, fav_brewery, password):
@@ -77,12 +77,12 @@ class Like(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(
         db.Integer,
-        db.ForeignKey("users.id", ondelete="cascade"),
+        db.ForeignKey("users.id"),
         primary_key=True,
     )
-    brewery_name = db.Column(
-        db.Text,
-        db.ForeignKey("breweries.obdb_id", ondelete="cascade"),
+    brewery_id = db.Column(
+        db.Integer,
+        db.ForeignKey("breweries.id"),
         primary_key=True,
     )
 
@@ -92,8 +92,9 @@ class Brewery(db.Model):
 
     __tablename__ = "breweries"
 
-    obdb_id = db.Column(db.Text, primary_key=True, nullable=False, unique=True)
-    name = db.Column(db.Text, primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True,
+                   nullable=True, unique=True, autoincrement=True)
+    name = db.Column(db.Text, nullable=False)
     brewery_type = db.Column(db.Text, nullable=False)
     street = db.Column(db.Text, nullable=True)
     address_2 = db.Column(db.Text, nullable=True)
