@@ -3,22 +3,44 @@ import requests
 API_URL = "https://api.openbrewerydb.org/breweries"
 
 
-def api_response():
-    page = 1
+def get_api_response():
+    resp = requests.get(f'{API_URL}')
+    data = resp.json()
+    brews = data
+
     breweries = []
 
-    while True:
-        print("----")
-        url = f"{API_URL}?by_state=california&page={page}&per_page=50"
-        print("Requesting url:", url)
+    for brew in brews:
 
-        resp = requests.get(url)
-        data = resp.json()
+        beer = {
+            'name': brew['name'],
+            'brewery_type': brew['brewery_type'],
+            'state': brew['state'],
+            'city': brew['city'],
+            'country': brew['country'],
+            'website_url': brew['website_url'],
+        }
 
-        if len(data) == 0:
-            break
-        breweries.extend(data)
-        page += 1
+        breweries.append(beer)
+    return breweries
+
+
+# def api_response():
+#     page = 1
+#     breweries = []
+
+#     while True:
+#         print("----")
+#         url = f"{API_URL}?by_state=california&page={page}&per_page=50"
+#         print("Requesting url:", url)
+
+#         resp = requests.get(url)
+#         data = resp.json()
+
+#         if len(data) == 0:
+#             break
+#         breweries.extend(data)
+#         page += 1
 
 
 # def get_api_response():

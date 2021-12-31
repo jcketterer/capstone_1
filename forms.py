@@ -91,8 +91,6 @@ class EditUserForm(FlaskForm):
 
     username = StringField("Username", validators=[
                            InputRequired(), Length(min=1, max=20)])
-    date_of_birth = DateField(
-        "Date of Birth", format='%Y-%m-%d', validators=[InputRequired(message="Please enter you Date of Birth")])
 
     email = StringField("Email", validators=[
                         InputRequired(), Email(message='Please Enter A Valid Email'), Length(max=50)])

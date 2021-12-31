@@ -2,17 +2,15 @@
 {% block title %}Search Brewery{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container d-flex justify-content-center">
   <div class="row">
-    <div class="" id="app">
-      <h1 class="ce">Search Breweries By State</h1>
-      <div class="col-md-8">
-        <form id="brew-search">
-          <input type="text" name="state" id="search-state" class="text-area"
-            placeholder="Search by State">
-          <input class="btn btn-outline-success" type="submit" id="submit" value="Find Brewery">
-        </form>
-      </div>
+    <div id="app">
+      <h3 class="mb-5">Search Breweries By State</h3>
+      <form class="d-flex justify-content-center">
+        <input type="text" name="state" id="search-state" class="text-area"
+          placeholder="Search by State">
+        <input class="btn btn-outline-success" type="submit" id="submit" value="Find Brewery">
+      </form>
       <div class="d-flex flex-wrap justify-content-center" id="search">
         {% for brew in breweries %}
         <div class="card border-warning m-1" style="max-width: 20rem;">

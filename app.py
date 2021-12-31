@@ -1,3 +1,4 @@
+import re
 from flask import (
     Flask,
     render_template,
@@ -9,16 +10,12 @@ from flask import (
     abort,
     url_for,
 )
+from sqlalchemy import or_
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from models import User, Like, Brewery, db, connect_db
-from forms import AddUserFrom, LoginForm, StateForm
-<<<<<<< HEAD
-# from api import get_api_response
-=======
-from api import get_api_response
+from forms import AddUserFrom, LoginForm, EditUserForm
 from werkzeug.exceptions import Unauthorized
->>>>>>> 84a3b22 (created search routes)
 import os
 import requests
 
@@ -131,6 +128,8 @@ def base():
 
     return render_template("home.html")
 
+# ********************* Beer routes and api calls ****************************
+
 
 @app.route('/random')
 def random_beer():
@@ -141,6 +140,31 @@ def random_beer():
             return ''
 
     return render_template("beer/random_beer.html", brewery=brewery)
+
+
+@app.route('/beer/info')
+def beer_info():
+
+    return render_template("beer/info.html")
+
+
+@app.route('/allbrew')
+def allbrew():
+    brews = Brewery.query.all()
+    return render_template("beer/allbrew.html", brews=brews)
+
+
+@app.route('/search', methods=['POST', 'GET'])
+def search():
+    if request.method == 'POST':
+        form = request.form
+        search_val = form['query']
+        search = "%{0}%".format(search_val)
+        results = Brewery.query.filter(Brewery.name.like(search)).all()
+
+        return render_template('beer/allbrew.html', brews=results)
+    else:
+        return redirect('beer/allbrew.html')
 
 
 # ******************** Functions for brewery data ****************************
@@ -180,53 +204,77 @@ def get_api_response(data):
 # ********************* Standard User Routes **********************************
 
 
-@app.route('/users/<int:username>')
-def show_user(username):
+@ app.route('/users/profile')
+def show_user():
     """Shows users account and favorite saved breweries"""
 
-    username = User.query.get_or_404(username)
-    # if user:
-    #     return render_template('users/details.html', user=user)
-    # else:
-    #     return redirect('/')
-    return render_template('user/details.html', username=username)
+    user_id = g.user.id
+    user = User.query.get_or_404(user_id)
+    if user:
+        return render_template('users/details.html', user=user)
+    else:
+        return redirect('/')
 
+
+@ app.route('/users/edit', methods=['POST', 'GET'])
+def edit_user():
+
+    if not g.user:
+        flash("Access Unauthorized", 'danger')
+        return redirect('/')
+
+    user = g.user
+    form = EditUserForm(obj=user)
+
+    if form.validate_on_submit():
+        if User.authenticate(user.username, form.password.data):
+            user.username = form.username.data
+            user.email = form.email.data
+            user.fav_brewery = form.fav_brewery.data
+
+            db.session.commit()
+            return redirect('/users/profile')
+        flash("Wrong Password, try again", 'danger')
+    return render_template('/users/edit.html', form=form, user_id=user.id)
 
 # **************************** Nav and Search links ***************************
 
 
-@app.route('/index')
+@ app.route('/index')
 def brewery_name_searches():
     name = request.args.get('name')
     breweries = []
 
     if name:
-        resp = requests.get(f'{API_URL}?by_name={name}', params={"n": name})
+        resp = requests.get(
+            f'{API_URL}?by_name={name}&per_page=50', params={"n": name})
         data = resp.json()
         breweries = get_api_response(data)
     return render_template('beer/index.html', breweries=breweries)
 
 
-@app.route('/state')
+@ app.route('/state')
 def brewery_state_searches():
 
     state = request.args.get('state')
     breweries = []
 
     if state:
-        resp = requests.get(f'{API_URL}?by_state={state}', params={"n": state})
+        resp = requests.get(
+            f'{API_URL}?by_state={state}&per_page=50', params={"s": state})
         data = resp.json()
         breweries = get_api_response(data)
     return render_template('beer/state.html', breweries=breweries)
 
 
-@app.route('/city')
+@ app.route('/city')
 def brewery_city_searches():
     city = request.args.get('city')
     breweries = []
 
     if city:
-        resp = requests.get(f'{API_URL}?by_city={city}', params={"n": city})
+        resp = requests.get(
+            f'{API_URL}?by_city={city}&per_page=50', params={"c": city})
         data = resp.json()
         breweries = get_api_response(data)
     return render_template('beer/city.html', breweries=breweries)

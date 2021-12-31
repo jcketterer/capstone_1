@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Brewery Home{% endblock %}
+
+{% block content %}
+
+<body>
+  <div class="container">
+    <h1 class="display-4">All Breweries</h1>
+    <blockquote class="blockquote">
+      <p>Search and Save breweries you like to your profile!</p>
+    </blockquote>
+    <form method="post" class="mb-3">
+      <input type="text" name="query" placeholder="Search Name ONLY">
+      <button class="btn btn-sm btn-outline-success" type="submit"
+        formaction="/search">Search</button>
+    </form>
+    <table class="table">
+      <thead class="thead-dark">
+        <th></th>
+        <th scope="col">Brewery Name</th>
+        <th scope="col">Brewery Type</th>
+        <th scope="col">Street</th>
+        <th scope="col">City</th>
+        <th scope="col">State</th>
+        <th scope="col">Website</th>
+      </thead>
+      <tbody>
+        {% for brew in brews %}
+        <tr class="table-active">
+          <td><a class="btn btn-sm btn-outline-info" href="">Like Me!</a></td>
+          <td>{{brew.name}} </td>
+          <td style="text-transform: capitalize;">{{brew.brewery_type}}</td>
+          <td>{{brew.street}}</td>
+          <td>{{brew.city}}</td>
+          <td>{{brew.state}}</td>
+          {% if brew.website_url %}
+          <td><a class="btn btn-outline-warning"
+              href="{{brew.website_url}}">{{brew.website_url}}</a></td>
+          {% else %}
+          <td>No Website Link Available</td>
+          {% endif %}
+
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+
+{% endblock %}
