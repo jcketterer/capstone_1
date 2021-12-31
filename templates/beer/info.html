@@ -4,23 +4,40 @@
 
 {% block content %}
 <div class="d-flex justify-content-center">
+  {% for brew in brewery %}
   <div class="card my-5 col-lg-10">
     <img
       src="https://images.unsplash.com/photo-1505075106905-fb052892c116?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
       class="card-img-top img-fluid mt-3" alt="" />
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
+      <h3 class="card-title">{{brew.name}}</h3>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">Cras justo odio</li>
-      <li class="list-group-item">Dapibus ac facilisis in</li>
-      <li class="list-group-item">Vestibulum at eros</li>
+      <li class="list-group-item" style="text-transform: capitalize;">{{brew.brewery_type}}</li>
+      <li class="list-group-item">{{brew.street}}</li>
+      <li class="list-group-item">{{brew.city}}, {{brew.state}}</li>
+      <li class="list-group-item">{{brew.country}}</li>
     </ul>
+    {% if brew.website_url %}
     <div class="card-body">
-      <a href="#" class="card-link">Card link</a>
+      <a href="{{brew.website_url}}" class="btn btn-sm btn-outline-info">{{brew.website_url}}</a>
     </div>
+    {% else %}
+    <li class="list-group-item">Website Available</li>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+<div id="map">
+  <div id="inside-map">
   </div>
 </div>
+<div id="test" class="text-light"></div>
 
 
+<script
+  src="
+    https://maps.googleapis.com/maps/api/js?key=AIzaSyDPD8djk8aZTWlaIdPqnBj0E5EicGcId8c&callback=initMap&libraries=&v=weekly"
+  async>
+  </script>
 {% endblock %}

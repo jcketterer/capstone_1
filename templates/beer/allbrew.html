@@ -16,7 +16,6 @@
     </form>
     <table class="table">
       <thead class="thead-dark">
-        <th></th>
         <th scope="col">Brewery Name</th>
         <th scope="col">Brewery Type</th>
         <th scope="col">Street</th>
@@ -27,8 +26,7 @@
       <tbody>
         {% for brew in brews %}
         <tr class="table-active">
-          <td><a class="btn btn-sm btn-outline-info" href="">Like Me!</a></td>
-          <td>{{brew.name}} </td>
+          <td><a id="name-color" href="/beer/{{brew.id}}/info">{{brew.name}}</a></td>
           <td style="text-transform: capitalize;">{{brew.brewery_type}}</td>
           <td>{{brew.street}}</td>
           <td>{{brew.city}}</td>

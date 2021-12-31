@@ -7,6 +7,20 @@
   animation: typing 0.7s steps(12, end), forwards, blink-caret 0.8s infinite;
 }
 
+#name-color {
+  font-family: 'Exo', sans-serif;
+  font-weight: bold;
+  color: #29dd98;
+}
+
+#map {
+  height: 500px;
+  width: 75%;
+  border-radius: 5px;
+  margin: auto;
+  padding: 10px;
+}
+
 /* The typing effect */
 @keyframes typing {
   from {

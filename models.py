@@ -93,7 +93,7 @@ class Brewery(db.Model):
     __tablename__ = "breweries"
 
     id = db.Column(db.Integer, primary_key=True,
-                   nullable=True, unique=True, autoincrement=True)
+                   nullable=False, unique=True)
     obdb_id = db.Column(db.Text)
     name = db.Column(db.Text, nullable=False)
     brewery_type = db.Column(db.Text, nullable=False)
@@ -113,3 +113,6 @@ class Brewery(db.Model):
     # navigation is brewery -> likes and back
 
     brewery_likes = db.relationship("Like", backref="breweries")
+
+    def __repr__(self):
+        return f"<Brewery: {self.id}, {self.name}, {self.brewery_type}, {self.city}, {self.state}>"

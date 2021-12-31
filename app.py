@@ -128,7 +128,7 @@ def base():
 
     return render_template("home.html")
 
-# ********************* Beer routes and api calls ****************************
+# ********************* Beer routes ****************************
 
 
 @app.route('/random')
@@ -142,19 +142,21 @@ def random_beer():
     return render_template("beer/random_beer.html", brewery=brewery)
 
 
-@app.route('/beer/info')
-def beer_info():
+@app.route('/beer/<int:brew_id>/info', methods=['POST', 'GET'])
+def beer_info(brew_id):
 
-    return render_template("beer/info.html")
+    brewery = Brewery.query.filter(Brewery.id == brew_id)
+
+    return render_template("beer/info.html", brewery=brewery)
 
 
-@app.route('/allbrew')
+@ app.route('/allbrew')
 def allbrew():
     brews = Brewery.query.all()
     return render_template("beer/allbrew.html", brews=brews)
 
 
-@app.route('/search', methods=['POST', 'GET'])
+@ app.route('/search', methods=['POST', 'GET'])
 def search():
     if request.method == 'POST':
         form = request.form
@@ -210,6 +212,7 @@ def show_user():
 
     user_id = g.user.id
     user = User.query.get_or_404(user_id)
+
     if user:
         return render_template('users/details.html', user=user)
     else:
@@ -278,3 +281,5 @@ def brewery_city_searches():
         data = resp.json()
         breweries = get_api_response(data)
     return render_template('beer/city.html', breweries=breweries)
+
+# *************** LIKE ROUTES *************************
