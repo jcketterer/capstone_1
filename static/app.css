@@ -1,9 +1,9 @@
 .name h1 {
-  overflow: hidden; /* Ensures the content is not revealed until the animation */
-  border-right: 0.15em solid #4dd6b9; /* The typwriter cursor */
-  white-space: nowrap; /* Keeps the content on a single line */
-  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-  letter-spacing: 0.25em; /* Adjust as needed */
+  overflow: hidden;
+  border-right: 0.15em solid #4dd6b9;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.25em;
   animation: typing 0.7s steps(12, end), forwards, blink-caret 0.8s infinite;
 }
 
@@ -15,7 +15,7 @@
 
 #map {
   height: 500px;
-  width: 75%;
+  width: 100%;
   border-radius: 5px;
   margin: auto;
   padding: 10px;
