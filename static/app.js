@@ -2,6 +2,7 @@
 function initMap() {
   const lat = document.getElementById('lat').innerText;
   const long = document.getElementById('long').innerText;
+  const brewName = document.getElementById('brew').innerText;
   console.log(lat);
   console.log(long);
 
@@ -16,5 +17,13 @@ function initMap() {
   const marker = new google.maps.Marker({
     position: uluru,
     map: map,
+  });
+
+  const infoWindow = new google.maps.InfoWindow({
+    content: `<span class="font-weight-bold">${brewName}</span>`,
+  });
+
+  marker.addListener('click', function () {
+    infoWindow.open(map, marker);
   });
 }

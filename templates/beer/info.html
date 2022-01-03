@@ -10,7 +10,7 @@
 
     </div>
     <div class="card-body">
-      <h3 class="card-title">{{brew.name}}</h3>
+      <h3 id="brew" class="card-title">{{brew.name}}</h3>
     </div>
     <ul class="list-group list-group-flush">
       <li class="list-group-item" style="text-transform: capitalize;">Brewery Type:
@@ -26,7 +26,7 @@
       <a href="{{brew.website_url}}" class="btn btn-sm btn-outline-info">{{brew.website_url}}</a>
     </div>
     {% else %}
-    <li class="list-group-item">Website Available</li>
+    <li class="list-group-item">Website Not Available</li>
     {% endif %}
   </div>
   {% endfor %}
