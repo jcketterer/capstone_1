@@ -31,7 +31,10 @@
 {%for brew in brewery %}
 <script type="text/javascript">
 
-  const map = L.map('map').setView([0, 0], 12);
+  const map = L.map('map', {
+    center: [43.00, -79.00],
+    zoom: 11
+  })
 
   const layer = L.tileLayer(
     'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
