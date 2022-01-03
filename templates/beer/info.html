@@ -7,40 +7,19 @@
   {% for brew in brewery %}
   <div class="card my-5 col-lg-10">
     <div class="mt-3" id="map">
-      {%for brew in brewery %}
-      <script type="text/javascript">
 
-        const map = L.map('map', {
-          center: [43.00, -79.00],
-          zoom: 11
-        })
-
-        const layer = L.tileLayer(
-          'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-          {
-            attribution:
-              '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-          },
-        );
-
-        map.addLayer(layer);
-
-        L.marker([{{ brew.latitude }}, {{ brew.longitude }}])
-          .addTo(map)
-          .bindPopup('<strong>{{brew.name}}</strong>')
-          .openPopup();
-
-      </script>
-      {% endfor %}
     </div>
     <div class="card-body">
       <h3 class="card-title">{{brew.name}}</h3>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item" style="text-transform: capitalize;">{{brew.brewery_type}}</li>
-      <li class="list-group-item">{{brew.street}}</li>
-      <li class="list-group-item">{{brew.city}}, {{brew.state}}</li>
-      <li class="list-group-item">{{brew.country}}</li>
+      <li class="list-group-item" style="text-transform: capitalize;">Brewery Type:
+        {{brew.brewery_type}}</li>
+      <li class="list-group-item">Street Address: {{brew.street}}</li>
+      <li class="list-group-item">City: {{brew.city}}, {{brew.state}}</li>
+      <li class="list-group-item">Country: {{brew.country}}</li>
+      <li id="lat" class="list-group-item">{{brew.latitude}}</li>
+      <li id="long" class="list-group-item">{{brew.longitude}}</li>
     </ul>
     {% if brew.website_url %}
     <div class="card-body">
@@ -52,5 +31,7 @@
   </div>
   {% endfor %}
 </div>
-
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPD8djk8aZTWlaIdPqnBj0E5EicGcId8c&callback=initMap&libraries=&v=weekly"
+  async></script>
 {% endblock %}
