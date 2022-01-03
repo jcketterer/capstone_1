@@ -27,7 +27,7 @@ app = Flask(__name__)
 app.jinja_env.filters["zip"] = zip
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-    "DATABASE_URL", "postgresql://brewery"
+    "DATABASE_URL", "postgresql:///brewery"
 )
 if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
     app.config["SQLALCHEMY_DATABASE_URI"] = app.config["SQLALCHEMY_DATABASE_URI"].replace(
