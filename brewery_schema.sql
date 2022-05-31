@@ -21,13 +21,13 @@
 
 CREATE TABLE "user" (
     "id" int   NOT NULL,
-    "first_name" sting   NOT NULL,
-    "last_name" sting   NOT NULL,
-    "username" sting   NOT NULL,
-    "city" sting   NOT NULL,
-    "state" sting   NOT NULL,
-    "favorite_brewery" sting   NOT NULL,
-    "password" sting   NOT NULL,
+    "first_name" string   NOT NULL,
+    "last_name" string   NOT NULL,
+    "username" string   NOT NULL,
+    "city" string   NOT NULL,
+    "state" string   NOT NULL,
+    "favorite_brewery" string   NOT NULL,
+    "password" string   NOT NULL,
     CONSTRAINT "pk_user" PRIMARY KEY (
         "id"
      )
